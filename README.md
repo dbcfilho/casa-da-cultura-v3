@@ -62,7 +62,7 @@ A documentação completa do sistema está disponível na pasta `docs/`:
 
 1. Clone o repositório ou baixe o código-fonte:
    ```bash
-   git clone https://github.com/seu-usuario/casa-da-cultura.git
+   git clone https://github.com/dbcfilho/casa-da-cultura.git
    cd casa-da-cultura
    ```
 

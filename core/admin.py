@@ -2,6 +2,10 @@ from django.contrib import admin
 from .models import Pessoa, MensagemPadrao, DataComemorativa, RegistroEnvioMensagem
 from django.utils.html import format_html
 
+admin.site.site_header = "Casa da Cultura Admin"
+admin.site.site_title = "Administração Casa da Cultura"
+admin.site.index_title = "Bem-vindo ao painel de administração"
+
 @admin.register(Pessoa)
 class PessoaAdmin(admin.ModelAdmin):
     """
