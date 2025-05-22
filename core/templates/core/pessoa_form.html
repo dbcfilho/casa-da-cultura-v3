@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Cadastro de Pessoa - Casa da Cultura{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">{{ titulo }}</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <h5 class="border-bottom pb-2 text-primary">Informações Pessoais</h5>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.nome_completo|as_crispy_field }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            {{ form.cpf|as_crispy_field }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            {{ form.rg|as_crispy_field }}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            {{ form.data_nascimento|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            {{ form.telefone|as_crispy_field }}
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            {{ form.email|as_crispy_field }}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <h5 class="border-bottom pb-2 text-primary">Endereço</h5>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.endereco|as_crispy_field }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            {{ form.bairro|as_crispy_field }}
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            {{ form.cep|as_crispy_field }}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            {{ form.cidade|as_crispy_field }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            {{ form.estado|as_crispy_field }}
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <h5 class="border-bottom pb-2 text-secondary">Categorização</h5>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <div class="form-check form-switch">
+                                {{ form.pai_ou_mae }}
+                                <label class="form-check-label" for="{{ form.pai_ou_mae.id_for_label }}">
+                                    Pai ou Mãe
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="form-check form-switch">
+                                {{ form.ajuda_hospital }}
+                                <label class="form-check-label" for="{{ form.ajuda_hospital.id_for_label }}">
+                                    Ajuda com Hospital
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="form-check form-switch">
+                                {{ form.ajuda_creche }}
+                                <label class="form-check-label" for="{{ form.ajuda_creche.id_for_label }}">
+                                    Ajuda com Creche
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="form-check form-switch">
+                                {{ form.recebeu_cesta_basica }}
+                                <label class="form-check-label" for="{{ form.recebeu_cesta_basica.id_for_label }}">
+                                    Recebeu Cesta Básica
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <div class="form-check form-switch">
+                                {{ form.participa_oficinas }}
+                                <label class="form-check-label" for="{{ form.participa_oficinas.id_for_label }}">
+                                    Participa de Oficinas
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="form-check form-switch">
+                                {{ form.interesse_novas_turmas }}
+                                <label class="form-check-label" for="{{ form.interesse_novas_turmas.id_for_label }}">
+                                    Interesse em Novas Turmas
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="form-check form-switch">
+                                {{ form.tem_filhos }}
+                                <label class="form-check-label" for="{{ form.tem_filhos.id_for_label }}">
+                                    Tem Filhos
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="form-check form-switch">
+                                {{ form.ajuda_transporte }}
+                                <label class="form-check-label" for="{{ form.ajuda_transporte.id_for_label }}">
+                                    Ajuda com Transporte
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            {{ form.observacoes|as_crispy_field }}
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{% url 'core:pessoa_lista' %}" class="btn btn-outline-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Inicializar máscaras
+        initMasks();
+    });
+</script>
+{% endblock %}

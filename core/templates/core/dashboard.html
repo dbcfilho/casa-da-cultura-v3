@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Casa da Cultura{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="display-6 text-primary">Dashboard</h1>
+                <p class="lead">Estatísticas e visualizações do sistema Casa da Cultura.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <!-- Cards de estatísticas -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card dashboard-card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="card-title text-muted">Total de Pessoas</h5>
+                        <h2 class="card-value">{{ total_pessoas }}</h2>
+                    </div>
+                    <div class="icon-primary">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-3">
+        <div class="card dashboard-card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="card-title text-muted">Ajuda Hospital</h5>
+                        <h2 class="card-value">{{ ajuda_hospital }}</h2>
+                    </div>
+                    <div class="icon-secondary">
+                        <i class="fas fa-hospital fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-3">
+        <div class="card dashboard-card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="card-title text-muted">Ajuda Creche</h5>
+                        <h2 class="card-value">{{ ajuda_creche }}</h2>
+                    </div>
+                    <div class="icon-primary">
+                        <i class="fas fa-child fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-3">
+        <div class="card dashboard-card card-secondary shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="card-title text-muted">Cestas Básicas</h5>
+                        <h2 class="card-value">{{ cesta_basica }}</h2>
+                    </div>
+                    <div class="icon-secondary">
+                        <i class="fas fa-shopping-basket fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Distribuição de Ajudas</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="ajudasChart"></canvas>
+                <!-- Valores ocultos para o gráfico -->
+                <input type="hidden" id="ajuda_hospital_count" value="{{ ajuda_hospital }}">
+                <input type="hidden" id="ajuda_creche_count" value="{{ ajuda_creche }}">
+                <input type="hidden" id="cesta_basica_count" value="{{ cesta_basica }}">
+                <input type="hidden" id="ajuda_transporte_count" value="{{ ajuda_transporte }}">
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">Aniversariantes por Mês</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="aniversariantesChart"></canvas>
+                <!-- Dados ocultos para o gráfico -->
+                {% for item in aniversariantes_por_mes %}
+                <span class="aniversariante-mes-data" data-mes="{{ item.mes }}" data-total="{{ item.total }}"></span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Distribuição por Bairro</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Bairro</th>
+                                <th class="text-end">Quantidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for bairro in bairros %}
+                            <tr>
+                                <td>{{ bairro.bairro }}</td>
+                                <td class="text-end">{{ bairro.total }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="2" class="text-center">Nenhum dado disponível</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">Cadastros por Mês</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Mês</th>
+                                <th class="text-end">Novos Cadastros</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in cadastros_por_mes %}
+                            <tr>
+                                <td>{{ item.mes }}</td>
+                                <td class="text-end">{{ item.total }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="2" class="text-center">Nenhum dado disponível</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Inicializar gráficos
+        if (typeof Chart !== 'undefined') {
+            initCharts();
+        }
+    });
+</script>
+{% endblock %}

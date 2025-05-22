@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pessoas - Casa da Cultura{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Pessoas Cadastradas</h4>
+                {% if user.tipo_usuario != 'consulta' %}
+                <a href="{% url 'core:pessoa_cadastro' %}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus me-1"></i> Novo Cadastro
+                </a>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                <form method="get" class="mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label for="id_nome" class="form-label">Nome</label>
+                            {{ form_filtro.nome }}
+                        </div>
+                        <div class="col-md-4">
+                            <label for="id_bairro" class="form-label">Bairro</label>
+                            {{ form_filtro.bairro }}
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Filtros Adicionais</label>
+                            <div class="d-flex flex-wrap gap-2">
+                                <div class="form-check form-check-inline">
+                                    {{ form_filtro.aniversariantes_mes }}
+                                    <label class="form-check-label" for="id_aniversariantes_mes">
+                                        Aniversariantes do Mês
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="accordion" id="accordionFiltros">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="headingFiltros">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                                data-bs-target="#collapseFiltros" aria-expanded="false" aria-controls="collapseFiltros">
+                                            Filtros Avançados
+                                        </button>
+                                    </h2>
+                                    <div id="collapseFiltros" class="accordion-collapse collapse" aria-labelledby="headingFiltros">
+                                        <div class="accordion-body">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        {{ form_filtro.pai_ou_mae }}
+                                                        <label class="form-check-label" for="id_pai_ou_mae">
+                                                            Pai ou Mãe
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        {{ form_filtro.ajuda_hospital }}
+                                                        <label class="form-check-label" for="id_ajuda_hospital">
+                                                            Ajuda Hospital
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        {{ form_filtro.ajuda_creche }}
+                                                        <label class="form-check-label" for="id_ajuda_creche">
+                                                            Ajuda Creche
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        {{ form_filtro.recebeu_cesta_basica }}
+                                                        <label class="form-check-label" for="id_recebeu_cesta_basica">
+                                                            Recebeu Cesta Básica
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2">
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        {{ form_filtro.participa_oficinas }}
+                                                        <label class="form-check-label" for="id_participa_oficinas">
+                                                            Participa de Oficinas
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        {{ form_filtro.tem_filhos }}
+                                                        <label class="form-check-label" for="id_tem_filhos">
+                                                            Tem Filhos
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-check">
+                                                        {{ form_filtro.ajuda_transporte }}
+                                                        <label class="form-check-label" for="id_ajuda_transporte">
+                                                            Ajuda Transporte
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                        <div class="col-12 d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search me-1"></i> Filtrar
+                            </button>
+                            <div>
+                                <a href="{% url 'core:exportar_pessoas_csv' %}{{ request.GET.urlencode }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-file-csv me-1"></i> Exportar CSV
+                                </a>
+                                <a href="{% url 'core:exportar_pessoas_pdf' %}{{ request.GET.urlencode }}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-file-pdf me-1"></i> Exportar PDF
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+                <hr>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Telefone</th>
+                                <th>Bairro</th>
+                                <th>Data de Nascimento</th>
+                                <th>Idade</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pessoa in page_obj %}
+                            <tr>
+                                <td>{{ pessoa.nome_completo }}</td>
+                                <td>{{ pessoa.telefone }}</td>
+                                <td>{{ pessoa.bairro }}</td>
+                                <td>{{ pessoa.data_nascimento|date:"d/m/Y" }}</td>
+                                <td>{{ pessoa.idade }} anos</td>
+                                <td>
+                                    <a href="{% url 'core:pessoa_detalhe' pessoa.pk %}" class="btn btn-sm btn-primary" 
+                                       data-bs-toggle="tooltip" title="Ver detalhes">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    {% if user.tipo_usuario != 'consulta' %}
+                                    <a href="{% url 'core:pessoa_editar' pessoa.pk %}" class="btn btn-sm btn-secondary"
+                                       data-bs-toggle="tooltip" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    {% endif %}
+                                    {% if user.tipo_usuario == 'admin' %}
+                                    <a href="{% url 'core:pessoa_excluir' pessoa.pk %}" class="btn btn-sm btn-danger btn-delete"
+                                       data-bs-toggle="tooltip" title="Excluir">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <p class="text-muted mb-0">Nenhuma pessoa encontrada com os filtros selecionados.</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                {% if page_obj.paginator.num_pages > 1 %}
+                <div class="d-flex justify-content-center mt-4">
+                    <nav aria-label="Paginação">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" aria-label="Primeira">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" aria-label="Anterior">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}">{{ num }}</a>
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" aria-label="Próxima">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.urlencode %}&{{ request.GET.urlencode }}{% endif %}" aria-label="Última">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                {% endif %}
+                
+                <div class="text-center mt-3">
+                    <p class="text-muted">Exibindo {{ page_obj.start_index }} a {{ page_obj.end_index }} de {{ total_resultados }} resultados</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Inicializar os campos de formulário com os valores atuais
+    $(document).ready(function() {
+        // Adicionar classes Bootstrap aos campos de formulário
+        $('#id_nome, #id_bairro').addClass('form-control');
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    restart: always
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+    networks:
+      - casa_da_cultura_network
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn casa_da_cultura.wsgi:application --bind 0.0.0.0:8000"
+
+  db:
+    image: mysql:8.0
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+      - ./docker/mysql/backup:/backup
+    env_file:
+      - ./.env
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    networks:
+      - casa_da_cultura_network
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  backup:
+    image: mysql:8.0
+    volumes:
+      - ./docker/mysql/backup:/backup
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+    networks:
+      - casa_da_cultura_network
+    command: >
+      sh -c "echo '0 0 * * * mysqldump -h db -u ${DB_USER} -p${DB_PASSWORD} ${DB_NAME} > /backup/backup_$$(date +\"%Y%m%d\").sql' > /var/spool/cron/crontabs/root && cron -f"
+    restart: always
+
+networks:
+  casa_da_cultura_network:
+    driver: bridge
+
+volumes:
+  mysql_data:
+  static_volume:
+  media_volume:

@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Início - Casa da Cultura{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h1 class="display-5 text-primary">Bem-vindo à Casa da Cultura</h1>
+                <p class="lead">Sistema de gerenciamento de cadastros e atendimentos sociais.</p>
+                <hr>
+                <p>Utilize o menu superior para navegar entre as funcionalidades do sistema.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <!-- Cards de estatísticas -->
+    <div class="col-md-6 col-lg-3">
+        <div class="card dashboard-card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="card-title text-muted">Total de Pessoas</h5>
+                        <h2 class="card-value">{{ total_pessoas }}</h2>
+                    </div>
+                    <div class="icon-primary">
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-3">
+        <div class="card dashboard-card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="card-title text-muted">Aniversariantes Hoje</h5>
+                        <h2 class="card-value">{{ aniversariantes_hoje }}</h2>
+                    </div>
+                    <div class="icon-secondary">
+                        <i class="fas fa-birthday-cake fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-3">
+        <div class="card dashboard-card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="card-title text-muted">Aniversariantes do Mês</h5>
+                        <h2 class="card-value">{{ aniversariantes_mes }}</h2>
+                    </div>
+                    <div class="icon-primary">
+                        <i class="fas fa-calendar-day fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-3">
+        <div class="card dashboard-card card-secondary shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="card-title text-muted">Cestas Básicas</h5>
+                        <h2 class="card-value">{{ cesta_basica }}</h2>
+                    </div>
+                    <div class="icon-secondary">
+                        <i class="fas fa-shopping-basket fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Acesso Rápido</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-3">
+                    <a href="{% url 'core:pessoa_cadastro' %}" class="btn btn-primary">
+                        <i class="fas fa-user-plus me-2"></i> Novo Cadastro
+                    </a>
+                    <a href="{% url 'core:aniversariantes' %}" class="btn btn-secondary">
+                        <i class="fas fa-birthday-cake me-2"></i> Aniversariantes
+                    </a>
+                    <a href="{% url 'core:dashboard' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-chart-bar me-2"></i> Dashboard
+                    </a>
+                    <a href="{% url 'core:pessoa_lista' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-search me-2"></i> Buscar Pessoas
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-secondary">
+                <h5 class="mb-0">Ajudas Fornecidas</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Tipo de Ajuda</th>
+                                <th class="text-end">Quantidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><i class="fas fa-hospital me-2 text-primary"></i> Hospital</td>
+                                <td class="text-end">{{ ajuda_hospital }}</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-child me-2 text-primary"></i> Creche</td>
+                                <td class="text-end">{{ ajuda_creche }}</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-shopping-basket me-2 text-secondary"></i> Cesta Básica</td>
+                                <td class="text-end">{{ cesta_basica }}</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fas fa-bus me-2 text-secondary"></i> Transporte</td>
+                                <td class="text-end">{{ ajuda_transporte }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

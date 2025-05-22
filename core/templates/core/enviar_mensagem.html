@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Enviar Mensagem - Casa da Cultura{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h4 class="mb-0">{{ titulo }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="flex-shrink-0">
+                            <div class="avatar bg-light rounded-circle p-3">
+                                <i class="fas fa-user fa-2x text-secondary"></i>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h5 class="mb-1">{{ pessoa.nome_completo }}</h5>
+                            <p class="mb-0 text-muted">
+                                <i class="fas fa-phone me-1"></i> {{ pessoa.telefone }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        {{ form.mensagem|as_crispy_field }}
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            {{ form.personalizar }}
+                            <label class="form-check-label" for="{{ form.personalizar.id_for_label }}">
+                                Personalizar mensagem
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3" id="conteudo-personalizado-container" style="display: none;">
+                        {{ form.conteudo_personalizado|as_crispy_field }}
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <i class="fab fa-whatsapp me-2"></i> A mensagem será enviada via WhatsApp para o número {{ pessoa.telefone }}.
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{% url 'core:aniversariantes' %}" class="btn btn-outline-secondary me-md-2">Cancelar</a>
+                        <button type="submit" class="btn btn-secondary">
+                            <i class="fab fa-whatsapp me-2"></i> Enviar Mensagem
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Mostrar/ocultar campo de conteúdo personalizado
+        $('#id_personalizar').change(function() {
+            if($(this).is(':checked')) {
+                $('#conteudo-personalizado-container').slideDown();
+            } else {
+                $('#conteudo-personalizado-container').slideUp();
+            }
+        });
+        
+        // Verificar estado inicial
+        if($('#id_personalizar').is(':checked')) {
+            $('#conteudo-personalizado-container').show();
+        }
+        
+        // Ao selecionar uma mensagem padrão
+        $('#id_mensagem').change(function() {
+            // Aqui poderíamos carregar uma prévia da mensagem selecionada
+            // via AJAX, mas por simplicidade, deixamos apenas o comentário
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,183 @@
+/* Estilos personalizados para o sistema Casa da Cultura */
+
+:root {
+    --primary-color: #0d6efd;     /* Azul principal */
+    --primary-dark: #0a58ca;      /* Azul escuro */
+    --primary-light: #cfe2ff;     /* Azul claro */
+    --secondary-color: #fd7e14;   /* Laranja principal */
+    --secondary-dark: #ca6510;    /* Laranja escuro */
+    --secondary-light: #ffe5d0;   /* Laranja claro */
+}
+
+/* Sobrescrever cores do Bootstrap */
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.btn-primary {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-dark) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark) !important;
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color) !important;
+    border-color: var(--secondary-dark) !important;
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary-dark) !important;
+}
+
+.btn-outline-secondary {
+    color: var(--secondary-color) !important;
+    border-color: var(--secondary-color) !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--secondary-color) !important;
+    color: white !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-secondary {
+    color: var(--secondary-color) !important;
+}
+
+.border-primary {
+    border-color: var(--primary-color) !important;
+}
+
+.border-secondary {
+    border-color: var(--secondary-color) !important;
+}
+
+/* Cabeçalhos de cards */
+.card-header {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.card-header.bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+/* Estilo para o menu lateral em telas maiores */
+@media (min-width: 992px) {
+    .sidebar {
+        position: fixed;
+        top: 56px;
+        bottom: 0;
+        left: 0;
+        z-index: 100;
+        padding: 48px 0 0;
+        box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    }
+}
+
+/* Estilos para tabelas */
+.table-hover tbody tr:hover {
+    background-color: var(--primary-light);
+}
+
+/* Estilos para formulários */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Estilos para badges */
+.badge.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.badge.bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+/* Estilos para cards de dashboard */
+.dashboard-card {
+    transition: transform 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-card .card-body {
+    padding: 1.5rem;
+}
+
+.dashboard-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+}
+
+.dashboard-card .card-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.dashboard-card.card-secondary .card-value {
+    color: var(--secondary-color);
+}
+
+/* Estilos para aniversariantes */
+.aniversariante-card {
+    border-left: 4px solid var(--secondary-color);
+}
+
+.aniversariante-hoje {
+    border-left: 4px solid var(--primary-color);
+    background-color: var(--primary-light);
+}
+
+/* Estilos para ícones */
+.icon-primary {
+    color: var(--primary-color);
+}
+
+.icon-secondary {
+    color: var(--secondary-color);
+}
+
+/* Estilos para paginação */
+.page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.page-link {
+    color: var(--primary-color);
+}
+
+.page-link:hover {
+    color: var(--primary-dark);
+}
+
+/* Estilos para footer */
+.footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .dashboard-card .card-value {
+        font-size: 1.5rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+}
